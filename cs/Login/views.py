@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework import status
@@ -31,8 +30,17 @@ class CustonAuthToken(ObtainAuthToken):
         })
 
 class ExampleList2(APIView):
+
     def get(self, request, format=None):
         print('Metodo get filter')
-        queryset = Example2Serializers(delete=False)
+        queryset = Example2.objects.filter(delete = False)
         serializer = Example2Serializers(queryset, many=True)
         return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = Example2Serializers(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            datas = serializer.data
+            return Response(datas)
+        return Response(serializer.errors, status = status.HTTP_404_BAD_REQUEST)
