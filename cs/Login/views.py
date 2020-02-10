@@ -1,9 +1,16 @@
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
+from rest_framework.views import APIView
+from rest_framework import status
+from rest_framework import generics
 
 # Create your views here.
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
+
+from Login.models import Example2
+from Login.serializer import  Example2Serializers
 
 class CustonAuthToken(ObtainAuthToken):
 
@@ -22,3 +29,10 @@ class CustonAuthToken(ObtainAuthToken):
                 'user_id': user.pk,
                 'username': user.username
         })
+
+class ExampleList2(APIView):
+    def get(self, request, format=None):
+        print('Metodo get filter')
+        queryset = Example2Serializers(delete=False)
+        serializer = Example2Serializers(queryset, many=True)
+        return Response(serializer.data)
