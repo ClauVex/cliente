@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework import generics
@@ -44,3 +45,4 @@ class ExampleList2(APIView):
             datas = serializer.data
             return Response(datas)
         return Response(serializer.errors, status = status.HTTP_404_BAD_REQUEST)
+
